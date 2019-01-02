@@ -1,0 +1,692 @@
+openapi: 3.0.0
+info:
+  title: Dataset API
+  description: "API provides access to retrieving information on a course data"
+  version: 1.0.0
+  license:
+    name: ""
+    url: ""
+paths:
+  /institutions/{institution}/courses/{course}/modes/{mode}:
+    get:
+      summary: "Returns a single course resource"
+      parameters:
+        - $ref: '#/components/parameters/institution'
+        - $ref: '#/components/parameters/course'
+        - $ref: '#/components/parameters/mode'
+      responses:
+        200:
+          description: "Returns a list of all skills in organisation thus far"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/course'
+        400:
+          $ref: '#/components/responses/InvalidRequestError'
+        404:
+          $ref: '#/components/responses/ResourceNotFound'
+        500:
+          $ref: '#/components/responses/InternalError'
+components:
+  schemas:
+    availability:
+      description: "Availability of parent object."
+      required: [
+        code,
+        label
+      ]
+      type: object
+      properties:
+        code:
+          description: "The code representing the availability of parent object."
+          type: string
+          enum: [
+            "0",
+            "1",
+            "2"
+          ]
+        label:
+          description: "The description of the availability of parent object."
+          type: string
+          enum: [
+            "Not available",
+            "Optional",
+            "Compulsory"
+          ]
+    institutionLink:
+      description: "A link to the teaching institution for this course."
+      type: string
+    englishLink:
+      description: "A link to the english version."
+      type: string
+    welshLink:
+      description: "A link to the welsh version."
+      type: string
+    selfLink:
+      description: "A link to this resource."
+      type: string
+    statistics:
+      description: "An object containing a list of statistics."
+      type: object
+      properties:
+        continuation:
+          $ref: '#/components/schemas/continuation'
+        employment:
+          $ref: '#/components/schemas/employment'
+        job_type:
+          $ref: '#/components/schemas/jobType'
+        job_list:
+          $ref: '#/components/schemas/jobList'
+        leo:
+          $ref: '#/components/schemas/leo'
+        salary:
+          $ref: '#/components/schemas/salary'
+    continuation:
+      description: "A list of continuation information for students."
+      type: array
+      items:
+        type: object
+        properties:
+          aggregation_level:
+            description: "Aggregation level applied to continuation information for students on the course. Known as 'CONTAGG' in continuation csv."
+            type: integer
+            enum: [
+              12,
+              13,
+              14,
+              22,
+              23,
+              24
+            ]
+          number_of_students:
+            description: "Population of students with continuation information. Known as 'CONTPOP' in continuation csv."
+            type: integer
+          proportion_of_students_continuing_with_provider_after_first_year_on_course:
+            description: "Proportion of students who continued on their course at the HE provider in the year after starting the course. Known as 'UCONT' in continuation csv."
+            type: integer
+          proportion_of_students_dormant_after_first_year_on_course:
+            description: "Proportion of students recorded as dormant the year after they entered HE. Known as 'UDORMANT' in continuation csv."
+            type: integer
+          proportion_of_students_gaining_intended_award_or_higher:
+            description: "Proportion of students who gained their intended award (or higher) the year after they entered HE. Known as 'UGAINED' in continuation csv."
+            type: integer
+          proportion_of_students_gained_lower_award:
+            description: "Proportion of students who gained a lower award than the one originally intended the year after they entered HE. Known as 'ULOWER' in continuation csv."
+            type: integer
+          proportion_of_students_leaving_course:
+            description: "Proportion of students who are not continuing into their following year of study, have not been awarded a qualification in either of the two comparison years. Known as 'ULEFT' in continuation csv."
+            type: integer
+          subject_code:
+            description: "JACS Level subject code. Known as 'CONTSBJ' in continuation csv."
+            type: string
+    employment:
+      description: "A list of information relating to student employment outcomes."
+      type: array
+      items:
+        type: object
+        properties:
+          aggregation_level:
+            description: "Aggregation level applied to employment information for students on the course. Known as 'EMPAGG' in employment csv."
+            type: integer
+            enum: [
+              12,
+              13,
+              14,
+              22,
+              23,
+              24
+            ]
+          number_of_students:
+            description: "Number of students in the population from which the employment data is derived for the course. Known as 'EMPPOP' in employment csv."
+            type: integer
+          proportion_of_students_assumed_to_be_unemployed:
+            description: "Proportion of students assumed to be unemployed six months after their course ended. Known as 'ASSUNEMP' in employment csv."
+            type: integer
+          proportion_of_students_in_study:
+            description: "Proportion of students who are undertaking further study six months after their course ended. Known as 'STUDY' in employment csv."
+            type: integer
+          proportion_of_students_in_work:
+            description: "Proportion of students in work six months after their course ended. Known as 'WORK' in employment csv."
+            type: integer
+          proportion_of_students_in_work_and_study:
+            description: "Proportion of students in work and study six months after their course ended. Known as 'BOTH' in employment csv."
+            type: integer
+          proportion_of_students_in_work_or_study:
+            description: "Proportion of students in work and/or study six months after their course ended. Known as 'WORKSTUDY' in employment csv."
+            type: integer
+          proportion_of_students_who_are_not_available_for_work_or_study:
+            description: "Proportion of students who are not available for work or study six months after their course ended. Known as 'NOAVAIL' in employment csv."
+            type: integer
+          response_rate:
+            description: "Response rate of students in the population from which the employment data is derived for the course. Known as 'EMPRESP_RATE' in employment csv."
+            type: integer
+          subject_code:
+            description: "JACS Level subject code. Known as 'EMPSBJ' in employment csv."
+            type: string
+    jobType:
+      description: "A list of information relating to the types of profession entered by students."
+      type: array
+      items:
+        type: object
+        properties:
+          aggregation_level:
+            description: "Aggregation level applied to job type data for the course. Known as 'JOBAGG' in job type csv."
+            type: integer
+            enum: [
+              12,
+              13,
+              14,
+              22,
+              23,
+              24
+            ]
+          number_of_students:
+            description: "Number of students in the population from which the job type data is derived for the course. Known as 'JOBPOP' in job type csv."
+            type: integer
+          proportion_of_students_in_professional_or_managerial_jobs:
+            description: "Proportion of students in professional or managerial jobs. Known as 'PROFMAN' in job type csv."
+            type: integer
+          proportion_of_students_in_non_professional_or_managerial_jobs:
+            description: "Proportion of students in non-professional or managerial jobs. Known as 'OTHERJOB' in job type csv."
+            type: integer
+          proportion_of_students_in_unknown_professions:
+            description: "Proportion of students whose job classification cannot be derived, or whose SOC code is unknown. Known as 'UNKWN' in job type csv."
+            type: integer
+          response_rate:
+            description: "Response rate of students in the population from which the job type data is derived for the course. Known as 'JOBRESP_RATE' in job type csv."
+            type: integer
+          subject_code:
+            description: "JACS Level subject code. Known as 'JOBSBJ' in job type csv."
+            type: string
+    jobList:
+      description: "A list of information about common job types obtained by students."
+      type: array
+      items:
+        type: object
+        properties:
+          order:
+            description: "The order to display the jobs in. Known as 'ORDER' in job list csv."
+            type: integer
+          list:
+            description: "Multiple jobs of the same order value."
+            type: array
+            items:
+              type: object
+              properties:
+                job:
+                  description: "The type of employment (SOC categories). Known as 'JOB' in job list csv."
+                  type: string
+                percentage_of_students:
+                  description: "The percentage of students in the type of employment. Known as 'PERC' in job list csv."
+                  type: integer
+    leo:
+      description: "A list of Longitudinal Education Outcomes salary data, (The data shows the typical annual earnings range three years after the student has graduated)."
+      type: array
+      items:
+        type: object
+        properties:
+          aggregation_level:
+            description: "Aggregation level applied to the Longitudinal Education Outcomes data for the subject (data is always subject level). Known as 'LEOAGG' in leo csv."
+            type: integer
+            enum: [
+              12,
+              13,
+              14,
+              22,
+              23,
+              24
+            ]
+          higher_quartile_range:
+            description: "Upper quartile Longitudinal Education Outcomes data for the subject. Known as 'LEOUQ' in leo csv."
+            type: integer
+          lower_quartile_range:
+            description: "Lower quartile Longitudinal Education Outcomes data for the subject. Known as 'LEOLQ' in leo csv."
+            type: integer
+          median:
+            description: "Median Longitudinal Education Outcomes data for the subject. Known as 'LEOMED' in leo csv."
+            type: integer
+          number_of_graduates:
+            description: "Number of graduates included in the Longitudinal Education Outcomes data for the subject being used for the course. Known as 'LEOPOP' in leo csv."
+            type: integer
+          subject_code:
+            description: "Subject code. Known as 'LEOSBJ' in leo csv."
+            type: string
+    salary: 
+      description: "A list of salary information of students (6 months after graduation)."
+      type: array
+      items:
+        type: object
+        properties:
+          aggregation_level:
+            description: "Aggregation level applied to the salary data for the course. Known as 'SALAGG' in salary csv."
+            type: integer
+            enum: [
+              12,
+              13,
+              14,
+              22,
+              23,
+              24
+            ]
+          higher_quartile_range:
+            description: "Sector upper quartile salary for subject. Known as 'UQ' in salary csv."
+            type: integer
+          lower_quartile_range:
+            description: "Sector lower quartile salary for subject. Known as 'LQ' in salary csv."
+            type: integer
+          median:
+            description: "Sector Median salary for subject. Known as 'MED' in salary csv."
+            type: integer
+          number_of_graduates:
+            description: "Number of students in the population from which the salary data is derived for the course. Known as 'SALPOP' in salary csv."
+            type: integer
+          response_rate:
+            description: "Response rate of students in the population from which the salary data is derived for the course. Known as 'SALRESP_RATE' in salary csv."
+            type: integer
+          subject_code:
+            description: "JACS Level subject code. Known as 'SALSBJ' in salary csv."
+            type: string
+    course:
+      description: "Details of course and related statistics"
+      required: [
+        country,
+        distance_learning,
+        foundation_year_availability,
+        honours_award_provision,
+        institution,
+        kis_course_id,
+        length_of_course,
+        links,
+        location,
+        mode,
+        qualification,
+        sandwich_year,
+        title,
+        year_abroad
+      ]
+      type: object
+      properties:
+        application_provider:
+          description: "This field records the UK Provider Reference Number (UKPRN) of the provider students apply to. This field will be used to indicate where students apply through one provider but are taught at another. Known as 'UKPRNAPPLY' in KIS course csv."
+          type: string
+        country:
+          description: "Country of provider, object containing code and name."
+          required: [
+            code,
+            name
+          ]
+          type: object
+          properties:
+            code:
+              description: "Country code for teaching provider. Known as 'COUNTRY' in institution csv."
+              type: string
+              enum: [
+                "XF",
+                "XG",
+                "XH",
+                "XI"
+              ]
+            name:
+              description: "Country name for teaching provider."
+              type: string
+              enum: [
+                "England",
+                "Northern Ireland",
+                "Scotland",
+                "Wales"
+              ]
+        distance_learning:
+          description: "Whether the course is offered wholly through distance learning. Containing code and label."
+          required: [
+            code,
+            label
+          ]
+          type: object
+          properties:
+            code:
+              description: "The code representing whether the course is offered wholly through distance learning. Known as 'DISTANCE' in KIS course csv."
+              type: string
+              enum: [
+                "0",
+                "1",
+                "2"
+              ]
+            label:
+              description: "The label describing whether the course is offered wholly through distance learning."
+              type: string
+              enum: [
+                "Course is available other than by distance learning",
+                "Course is only available through distance learning",
+                "Course is optionally available through distance learning"
+              ]
+        foundation_year_availability:
+          $ref: '#/components/schemas/availability'
+        honours_award_provision:
+          description: "Describes whether the course aim, on successful completion, would result in an honours (Hons) degree. Known as 'HONOURS' in KIS course csv."
+          type: boolean
+        institution:
+          description: "An object containing information on the teaching UK provider."
+          required: [
+            public_ukprn_name,
+            public_ukprn,
+            ukprn_name,
+            ukprn
+          ]
+          type: object
+          properties:
+            public_ukprn_name:
+              description: "The name of the publication UK provider for where the course is primarily taught."
+              type: string
+            public_ukprn:
+              description: "Publication UK provider reference number for where the course is primarily taught. Known as 'PUBUKPRN' across csvs."
+              type: string
+            ukprn_name:
+              description: "The name of the UK provider registered on the UK Register of Learning Providers (UKRLP)."
+              type: string
+            ukprn:
+              description: "UK provider reference number, which is the unique identifier allocated to providers by the UK Register of Learning Providers (UKRLP). Known as 'UKPRN' across csvs."
+              type: string
+        kis_course_id:
+          description: "An identifier which uniquely identifies a course within a provider. Known as 'KISCOURSEID' across csvs."
+          type: string
+        length_of_course:
+          description: "The total number of stages for the course. Object containing a code and equivalent label. Known as 'NUMSTAGE' in KIS course csv."
+          required: [
+            code,
+            label
+          ]
+          type: object
+          properties:
+            code:
+              description: "The code representing the total number of stages from the course."
+              type: string
+              enum: [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7"
+              ]
+            label:
+              description: "The label representing the total number of stages from the course."
+              type: string
+              enum: [
+                "1 stage",
+                "2 stages",
+                "3 stages",
+                "4 stages",
+                "5 stages",
+                "6 stages",
+                "7 stages"
+              ]
+        links:
+          description: "A list of links related to this resource"
+          type: object
+          required: [
+            assessment_method,
+            course_page,
+            employment_details,
+            financial_support_details,
+            institution,
+            learning_and_teaching_methods,
+            self
+          ]
+          properties:
+            assessment_method:
+              description: "URLs explaining assessment methods of the course. Known as 'ASSURL' and 'ASSURLW' in english and welsh respectively within the KIS course csv."
+              required: [
+                english
+              ]
+              type: object
+              properties:
+                english:
+                  $ref: '#/components/schemas/englishLink'
+                welsh:
+                  $ref: '#/components/schemas/welshLink'
+            course_page:
+              description: "URLs for the course page. Known as 'CRSEURL' and 'CRSEURLW' in english and welsh respectively within the KIS course csv."
+              required: [
+                english
+              ]
+              type: object
+              properties:
+                english:
+                  $ref: '#/components/schemas/englishLink'
+                welsh:
+                  $ref: '#/components/schemas/welshLink'
+            employment_details:
+              description: "URLs for further details on employment opportunities. Known as 'EMPLOYURL' and 'EMPLOYURLW' in english and welsh respectively within the KIS course csv."
+              required: [
+                english
+              ]
+              type: object
+              properties:
+                english:
+                  $ref: '#/components/schemas/englishLink'
+                welsh:
+                  $ref: '#/components/schemas/welshLink'
+            financial_support_details:
+              description: "Links to further details on financial support. Known as 'SUPPORTURL' and 'SUPPORTURLW' in english and welsh respectively within the KIS course csv."
+              required: [
+                english
+              ]
+              type: object
+              properties:
+                english:
+                  $ref: '#/components/schemas/englishLink'
+                welsh:
+                  $ref: '#/components/schemas/welshLink'
+            institution:
+              $ref: '#/components/schemas/institutionLink'
+            learning_and_teaching_methods:
+              description: "URLs explaining Learning and Teaching methods. Known as 'LTURL' and 'LTURLW' in english and welsh respectively within the KIS course csv."
+              required: [
+                english
+              ]
+              type: object
+              properties:
+                english:
+                  $ref: '#/components/schemas/englishLink'
+                welsh:
+                  $ref: '#/components/schemas/welshLink'      
+            self:
+              $ref: '#/components/schemas/selfLink'
+        location:
+          description: "Sub document containing information on course location."
+          required: [
+            changes,
+            latitude,
+            longitude
+          ]
+          type: object
+          properties:
+            changes:
+              description: "Indicator for if the teaching location changes during any part of the course. Known as 'LOCCHNGE' in KIS course csv."
+              type: boolean
+            latitude:
+              description: "Latitude reference point for the teaching location. Known as 'LATITUDE' in location csv."
+              type: string
+            longitude:
+              description: "Longitude reference point for the teaching location. Known as 'LONGITUDE' in location csv."
+              type: string
+        mode:
+          description: "Indicator to represent if a course is advertised as full-time, part-time or both. Known as 'KISMODE' in KIS course csv."
+          required: [
+            code,
+            label
+          ]
+          type: object
+          properties:
+            code:
+              description: "The code representing how the course is identified."
+              type: string
+              enum: [
+                "1",
+                "2",
+                "3"
+              ]
+            label:
+              description: "The description for code representing how the course is identified."
+              type: string
+              enum: [
+                "Full-time",
+                "Part-time",
+                "Both"
+              ]
+        nhs_funded:
+          description: "Whether there are any NHS funded students on the course. Known as 'NHS' in KIS course csv."
+          required: [
+            code,
+            label
+          ]
+          type: object
+          properties:
+            code:
+              description: "The code representing whether there are any NHS funded students on the course."
+              type: string
+              enum: [
+                "0",
+                "1"
+              ]
+            label:
+              description: "The description for code representing whether there are any NHS funded students on the course."
+              type: string
+              enum: [
+                "None",
+                "Any"
+              ]
+        qualification:
+          description: "Further details of the qualification of course."
+          required: [
+            code,
+            label,
+            level,
+            name
+          ]
+          type: object
+          properties:
+            code:
+              description: "The code referencing course qualification. Known as 'KISAIM' in KIS course csv."
+              type: string
+              example: "021"
+            label:
+              description: "The short name (alias) of the course qualification."
+              type: string
+              example: "BSc"
+            level:
+              description: "The qualificatin level for course."
+              type: string
+              enum: [
+                "F",
+                "U"
+              ]
+            name:
+              description: "The long name of the course qualification."
+              type: string
+              example: "Bachelor of Science"
+        sandwich_year:
+          $ref: '#/components/schemas/availability'
+        statistics:
+          $ref: '#/components/schemas/statistics'
+        title:
+          description: "The title given to course by institution."
+          required: [
+            english
+          ]
+          type: object
+          properties:
+            english:
+              description: "An english version of the title given by institution."
+              type: string
+            welsh:
+              description: "A welsh version of the title given by institution."
+              type: string
+        ucas_code_id:
+          description: "The unique identifier given to course by UCAS."
+          type: string
+        year_abroad:
+          $ref: '#/components/schemas/availability'
+    errorResponse:
+      description: "The error response body, contains specific details of why the request failed"
+      type: object
+      properties:
+        errors:
+          description: "A list of errors found for request"
+          type: array
+          items:
+            type: object
+            properties:
+              error:
+                description: "An error being returned for request"
+                type: string
+              error_values:
+                description: "A collection of request key/value pairs which resulted in error."
+                type: array
+                items:
+                  type: object
+                  properties:
+                    <key>:
+                      description: ""
+                      type: string
+  parameters:
+    institution:
+      description: "The name of the institution that the course is associated with."
+      in: path
+      name: institution
+      required: true
+      schema:
+        type: string
+    course:
+      description: "The name of the course."
+      in: path
+      name: course
+      required: true
+      schema:
+        type: string
+    mode:
+      description: "The course mode, possible values are 1 (Full-time), 2 (Part-time) and 3 (Both)"
+      in: path
+      name: mode
+      required: true
+      schema:
+        type: string
+        enum: [
+          "1",
+          "2",
+          "3"
+        ]
+  responses:
+    ConflictError:
+      description: "Failed to process the request due to a conflict"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/errorResponse'
+    ForbiddenError:
+      description: "The request is forbidden"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/errorResponse'
+    InternalError:
+      description: "Failed to process the request due to an internal error"
+    InvalidRequestError:
+      description: "Failed to process the request due to invalid request"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/errorResponse'
+    ResourceNotFound:
+      description: "The resource was not found"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/errorResponse'
+    UnauthorisedError:
+      description: "The token provided is unauthorised to carry out this operation"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/errorResponse'
