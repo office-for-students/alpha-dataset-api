@@ -17,7 +17,7 @@ Using [Homebrew](https://brew.sh/) to install go
 
 #### Loading Mongo Data from scripts
 
-See [scripts](https://github.com/office-for-students/alpha-scripts/tree/develop/README.md)
+See [scripts](https://github.com/office-for-students/alpha-scripts)
 
 #### Running Service
 
