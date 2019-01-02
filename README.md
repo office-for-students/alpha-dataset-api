@@ -15,9 +15,17 @@ Using [Homebrew](https://brew.sh/) to install go
 * Run `brew install mongodb`
 * Run `brew services restart mongodb`
 
-### Loading Mongo Data from scripts
+#### Loading Mongo Data from scripts
 
-See [scripts] (https://github.com/office-for-students/alpha-scripts/tree/develop/README.md)
+See [scripts](https://github.com/office-for-students/alpha-scripts/tree/develop/README.md)
+
+#### Running Service
+
+* Run `make debug`
+
+#### Running tests
+
+* Run `make test`
 
 ### Configuration
 
