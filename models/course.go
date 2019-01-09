@@ -12,10 +12,11 @@ type Course struct {
 	Length              *LengthObject      `bson:"length_of_course" json:"length_of_course"`
 	Links               *LinkList          `bson:"links" json:"links"`
 	Location            *Location          `bson:"location" json:"location"`
-	Mode                *Mode              `bson:"course_mode" json:"course_mode"`
+	Mode                *Mode              `bson:"mode" json:"mode"`
 	NHSFunded           *NHSFunded         `bson:"nhs_funded,omitempty" json:"nhs_funded,omitempty"`
 	Qualification       *Qualification     `bson:"qualification" json:"qualification"`
 	SandwichYear        *Availability      `bson:"sandwich_year" json:"sandwich_year"`
+	Statistics          *Statistics        `bson:"statistics" json:"statistics"`
 	Title               *Language          `bson:"title" json:"title"`
 	UCASCode            string             `bson:"ucas_code_id,omitempty" json:"ucas_code_id,omitempty"`
 	YearAbroad          *Availability      `bson:"year_abroad" json:"year_abroad"`

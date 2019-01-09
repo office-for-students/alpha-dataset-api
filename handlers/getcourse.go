@@ -18,26 +18,29 @@ func (cfg *Config) GetCourse(w http.ResponseWriter, r *http.Request) {
 	defer drainBody(ctx, r)
 
 	vars := mux.Vars(r)
-	institution := vars["institution"]
-	courseID := vars["course"]
+	institutionID := vars["institution_id"]
+	courseID := vars["course_id"]
 	mode := vars["mode"]
-	logData := log.Data{"institution": institution, "course_id": courseID, "mode": mode}
+	logData := log.Data{"institution_id": institutionID, "course_id": courseID, "mode": mode}
 
 	log.InfoCtx(ctx, "GetCourse handler: attempting to get course resource", logData)
 
 	// Get course details from datastore
-	course, err := cfg.DataStore.GetCourse(ctx, institution, courseID, mode)
+	course, err := cfg.DataStore.GetCourse(ctx, institutionID, courseID, mode)
 	if err != nil {
 		log.ErrorCtx(ctx, errors.WithMessage(err, "GetCourse handler: failed to get course resource"), logData)
 
 		errorValues := make(map[string](string))
-		errorValues["institution"] = institution
-		errorValues["course"] = courseID
+		errorValues["institution_id"] = institutionID
+		errorValues["course_id"] = courseID
 		errorValues["mode"] = mode
 
 		datastoreError(ctx, w, errs.New(err, 0, errorValues))
 		return
 	}
+
+	course.Links.Institution = cfg.Host + "/institutions/" + institutionID
+	course.Links.Self = cfg.Host + "/institutions/" + institutionID + "/courses/" + courseID + "/modes/" + mode
 
 	b, err := json.Marshal(course)
 	if err != nil {

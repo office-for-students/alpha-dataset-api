@@ -7,12 +7,12 @@ info:
     name: ""
     url: ""
 paths:
-  /institutions/{institution}/courses/{course}/modes/{mode}:
+  /institutions/{institution_id}/courses/{course_id}/modes/{mode}:
     get:
       summary: "Returns a single course resource"
       parameters:
-        - $ref: '#/components/parameters/institution'
-        - $ref: '#/components/parameters/course'
+        - $ref: '#/components/parameters/institutionID'
+        - $ref: '#/components/parameters/courseID'
         - $ref: '#/components/parameters/mode'
       responses:
         200:
@@ -85,6 +85,9 @@ components:
       description: "A list of continuation information for students."
       type: array
       items:
+        required: [
+          unavailable
+        ]
         type: object
         properties:
           aggregation_level:
@@ -119,11 +122,22 @@ components:
           subject_code:
             description: "JACS Level subject code. Known as 'CONTSBJ' in continuation csv."
             type: string
+          unavailable:
+            description: ""
+            type: string
+            enum: [
+              "0",
+              "1",
+              "2"
+            ]
     employment:
       description: "A list of information relating to student employment outcomes."
       type: array
       items:
         type: object
+        required: [
+          unavailable
+        ]
         properties:
           aggregation_level:
             description: "Aggregation level applied to employment information for students on the course. Known as 'EMPAGG' in employment csv."
@@ -163,11 +177,77 @@ components:
           subject_code:
             description: "JACS Level subject code. Known as 'EMPSBJ' in employment csv."
             type: string
+          unavailable:
+            description: ""
+            type: string
+            enum: [
+              "0",
+              "1",
+              "2"
+            ]
+    jobList:
+      description: "A list of information about common job types obtained by students."
+      type: object
+      required: [
+        unavailable
+      ]
+      properties:
+        aggregation_level:
+            description: "Aggregation level applied to job list information for students on the course. Known as 'COMAGG' in common csv."
+            type: integer
+            enum: [
+              12,
+              13,
+              14,
+              22,
+              23,
+              24
+            ]
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              order:
+                description: "The order to display the jobs in. Known as 'ORDER' in job list csv."
+                type: integer
+              list:
+                description: "Multiple jobs of the same order value."
+                type: array
+                items:
+                  type: object
+                  properties:
+                    job:
+                      description: "The type of employment (SOC categories). Known as 'JOB' in job list csv."
+                      type: string
+                    percentage_of_students:
+                      description: "The percentage of students in the type of employment. Known as 'PERC' in job list csv."
+                      type: integer
+        number_of_students:
+            description: "Number of students in the population from which the job list data is derived for the course. Known as 'COMPOP' in common csv."
+            type: integer
+        response_rate:
+            description: "Response rate of students in the population from which the job list data is derived for the course. Known as 'COMRESP_RATE' in common csv."
+            type: integer
+        subject_code:
+            description: "JACS Level subject code. Known as 'COMSBJ' in common csv."
+            type: string
+        unavailable:
+            description: ""
+            type: string
+            enum: [
+              "0",
+              "1",
+              "2"
+            ]
     jobType:
       description: "A list of information relating to the types of profession entered by students."
       type: array
       items:
         type: object
+        required: [
+          unavailable
+        ]
         properties:
           aggregation_level:
             description: "Aggregation level applied to job type data for the course. Known as 'JOBAGG' in job type csv."
@@ -198,32 +278,22 @@ components:
           subject_code:
             description: "JACS Level subject code. Known as 'JOBSBJ' in job type csv."
             type: string
-    jobList:
-      description: "A list of information about common job types obtained by students."
-      type: array
-      items:
-        type: object
-        properties:
-          order:
-            description: "The order to display the jobs in. Known as 'ORDER' in job list csv."
-            type: integer
-          list:
-            description: "Multiple jobs of the same order value."
-            type: array
-            items:
-              type: object
-              properties:
-                job:
-                  description: "The type of employment (SOC categories). Known as 'JOB' in job list csv."
-                  type: string
-                percentage_of_students:
-                  description: "The percentage of students in the type of employment. Known as 'PERC' in job list csv."
-                  type: integer
+          unavailable:
+            description: ""
+            type: string
+            enum: [
+              "0",
+              "1",
+              "2"
+            ]
     leo:
       description: "A list of Longitudinal Education Outcomes salary data, (The data shows the typical annual earnings range three years after the student has graduated)."
       type: array
       items:
         type: object
+        required: [
+          unavailable
+        ]
         properties:
           aggregation_level:
             description: "Aggregation level applied to the Longitudinal Education Outcomes data for the subject (data is always subject level). Known as 'LEOAGG' in leo csv."
@@ -251,11 +321,22 @@ components:
           subject_code:
             description: "Subject code. Known as 'LEOSBJ' in leo csv."
             type: string
+          unavailable:
+            description: ""
+            type: string
+            enum: [
+              "0",
+              "1",
+              "2"
+            ]
     salary: 
       description: "A list of salary information of students (6 months after graduation)."
       type: array
       items:
         type: object
+        required: [
+          unavailable
+        ]
         properties:
           aggregation_level:
             description: "Aggregation level applied to the salary data for the course. Known as 'SALAGG' in salary csv."
@@ -286,6 +367,14 @@ components:
           subject_code:
             description: "JACS Level subject code. Known as 'SALSBJ' in salary csv."
             type: string
+          unavailable:
+            description: ""
+            type: string
+            enum: [
+              "0",
+              "1",
+              "2"
+            ]
     course:
       description: "Details of course and related statistics"
       required: [
@@ -631,17 +720,17 @@ components:
                       description: ""
                       type: string
   parameters:
-    institution:
-      description: "The name of the institution that the course is associated with."
+    institutionID:
+      description: "The publication UK provider reference number of the institution that the course is associated with."
       in: path
-      name: institution
+      name: institution_id
       required: true
       schema:
         type: string
-    course:
-      description: "The name of the course."
+    courseID:
+      description: "An identifier which uniquely identifies a course within a provider. Known as 'KISCOURSEID' across csvs."
       in: path
-      name: course
+      name: course_id
       required: true
       schema:
         type: string

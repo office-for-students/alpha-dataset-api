@@ -13,5 +13,5 @@ type DataStore struct {
 
 // Storer represents basic data access via Get, Remove and Upsert methods.
 type Storer interface {
-	GetCourse(ctx context.Context, institutionName, id, mode string) (*models.Course, error)
+	GetCourse(ctx context.Context, institutionID, courseID, mode string) (*models.Course, error)
 }

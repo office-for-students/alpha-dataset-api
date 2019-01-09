@@ -37,14 +37,14 @@ func (m *Mongo) Init() (session *mgo.Session, err error) {
 }
 
 // GetCourse retrieves a single course resource from datastore
-func (m *Mongo) GetCourse(ctx context.Context, institutionName, id, mode string) (*models.Course, error) {
+func (m *Mongo) GetCourse(ctx context.Context, institutionID, courseID, mode string) (*models.Course, error) {
 	s := m.Session.Copy()
 	defer s.Close()
 
 	selector := bson.M{
-		"institution.name": institutionName,
-		"kis_course_id":    id,
-		"course_mode.code": mode,
+		"institution.public_ukprn": institutionID,
+		"kis_course_id":            courseID,
+		"mode.code":                mode,
 	}
 
 	var course models.Course

@@ -54,7 +54,7 @@ func Routes(cfg config.Configuration, router *mux.Router, dataStore store.Storer
 	routeConfig := handlers.Config{DataStore: dataStore, Host: host}
 	// api.Router.HandleFunc("/institutions/{institution}", routeConfig.GetInstitutions).Methods("GET")
 	// api.Router.HandleFunc("/institutions/{institution}/courses", routeConfig.GetCourses).Methods("GET")
-	api.Router.HandleFunc("/institutions/{institution}/courses/{course}/modes/{mode}", routeConfig.GetCourse).Methods("GET")
+	api.Router.HandleFunc("/institutions/{institution_id}/courses/{course_id}/modes/{mode}", routeConfig.GetCourse).Methods("GET")
 	return &api
 }
 
