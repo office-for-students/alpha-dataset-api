@@ -7,6 +7,7 @@ type Course struct {
 	DistanceLearning    *DistanceLearning  `bson:"distance_learning" json:"distance_learning"`
 	Foundation          string             `bson:"foundation_year_availability" json:"foundation_year_availability"` // enum
 	Honours             bool               `bson:"honours_award_provision" json:"honours_award_provision"`
+	ID                  string             `bson:"_id"`
 	Institution         *InstitutionObject `bson:"institution" json:"institution"`
 	KISCourseID         string             `bson:"kis_course_id" json:"kis_course_id"`
 	Length              *LengthObject      `bson:"length_of_course" json:"length_of_course"`
@@ -43,9 +44,10 @@ type DistanceLearning struct {
 
 // InstitutionObject represents institution data related to course
 type InstitutionObject struct {
-	Name        string `bson:"name" json:"name"`
-	PublicUKPRN string `bson:"public_ukprn" json:"public_ukprn"`
-	UKPRN       string `bson:"ukprn" json:"ukprn"`
+	PublicUKPRNName string `bson:"public_ukprn_name" json:"public_ukprn_name"`
+	PublicUKPRN     string `bson:"public_ukprn" json:"public_ukprn"`
+	UKPRN           string `bson:"ukprn" json:"ukprn"`
+	UKPRNName       string `bson:"ukprn_name" json:"ukprn_name"`
 }
 
 // Language represents an object containing english or welsh strings
