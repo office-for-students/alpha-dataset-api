@@ -75,9 +75,10 @@ type LinkList struct {
 
 // Location represents an object containing fields to enable one to locate institution
 type Location struct {
-	Changes   bool   `bson:"changes" json:"changes"`
-	Latitude  string `bson:"latitude" json:"latitude"`
-	Longitude string `bson:"longitude" json:"longitude"`
+	Changes   bool      `bson:"changes" json:"changes"`
+	Latitude  string    `bson:"latitude,omitempty" json:"latitude,omitempty"`
+	Longitude string    `bson:"longitude,omitempty" json:"longitude,omitempty"`
+	Name      *Language `bson:"name,omitempty" json:"name,omitempty"`
 }
 
 // NHSFunded represents an object referring to the course having any NHS funded students

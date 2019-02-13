@@ -81,13 +81,35 @@ components:
           $ref: '#/components/schemas/leo'
         salary:
           $ref: '#/components/schemas/salary'
+    subject:
+      description: "An object containing subject information that the statistical data is representing."
+      type: object
+      properties:
+        code:
+          description: "The code to represent the subject."
+          type: string
+        name:
+          description: "The name of the subject."
+          type: string
+    unavailable:
+      description: "An object containing data on the unavailability of subject statistical data."
+      type: object
+      properties:
+        code:
+          description: "The code used in conjunction with aggregation level and the country in which the course is taught that forms the unavailability resaon of the statistical data."
+          type: integer
+          enum: [
+            0,
+            1,
+            2
+          ]
+        reason:
+          description: "The reason for the unavailability of the statistical data. This uses a combination of which country the course is taught in, the aggregation level and the unavailability code."
+          type: string
     continuation:
       description: "A list of continuation information for students."
       type: array
       items:
-        required: [
-          unavailable
-        ]
         type: object
         properties:
           aggregation_level:
@@ -119,17 +141,10 @@ components:
           proportion_of_students_leaving_course:
             description: "Proportion of students who are not continuing into their following year of study, have not been awarded a qualification in either of the two comparison years. Known as 'ULEFT' in continuation csv."
             type: integer
-          subject_code:
-            description: "JACS Level subject code. Known as 'CONTSBJ' in continuation csv."
-            type: string
+          subject:
+            $ref: '#/components/schemas/subject'
           unavailable:
-            description: ""
-            type: string
-            enum: [
-              "0",
-              "1",
-              "2"
-            ]
+            $ref: '#/components/schemas/unavailable'
     employment:
       description: "A list of information relating to student employment outcomes."
       type: array
@@ -174,43 +189,30 @@ components:
           response_rate:
             description: "Response rate of students in the population from which the employment data is derived for the course. Known as 'EMPRESP_RATE' in employment csv."
             type: integer
-          subject_code:
-            description: "JACS Level subject code. Known as 'EMPSBJ' in employment csv."
-            type: string
+          subject:
+            $ref: '#/components/schemas/subject'
           unavailable:
-            description: ""
-            type: string
-            enum: [
-              "0",
-              "1",
-              "2"
-            ]
+            $ref: '#/components/schemas/unavailable'
     jobList:
       description: "A list of information about common job types obtained by students."
       type: object
-      required: [
-        unavailable
-      ]
       properties:
-        aggregation_level:
-            description: "Aggregation level applied to job list information for students on the course. Known as 'COMAGG' in common csv."
-            type: integer
-            enum: [
-              12,
-              13,
-              14,
-              22,
-              23,
-              24
-            ]
         items:
           type: array
           items:
             type: object
             properties:
-              order:
-                description: "The order to display the jobs in. Known as 'ORDER' in job list csv."
+              aggregation_level:
+                description: "Aggregation level applied to job list information for students on the course. Known as 'COMAGG' in common csv."
                 type: integer
+                enum: [
+                  12,
+                  13,
+                  14,
+                  22,
+                  23,
+                  24
+                ]
               list:
                 description: "Multiple jobs of the same order value."
                 type: array
@@ -223,31 +225,26 @@ components:
                     percentage_of_students:
                       description: "The percentage of students in the type of employment. Known as 'PERC' in job list csv."
                       type: integer
-        number_of_students:
-            description: "Number of students in the population from which the job list data is derived for the course. Known as 'COMPOP' in common csv."
-            type: integer
-        response_rate:
-            description: "Response rate of students in the population from which the job list data is derived for the course. Known as 'COMRESP_RATE' in common csv."
-            type: integer
-        subject_code:
-            description: "JACS Level subject code. Known as 'COMSBJ' in common csv."
-            type: string
+              number_of_students:
+                description: "Number of students in the population from which the job list data is derived for the course. Known as 'COMPOP' in common csv."
+                type: integer
+              order:
+                description: "The order to display the jobs in. Known as 'ORDER' in job list csv."
+                type: integer
+              response_rate:
+                description: "Response rate of students in the population from which the job list data is derived for the course. Known as 'COMRESP_RATE' in common csv."
+                type: integer
+              subject:
+                $ref: '#/components/schemas/subject'
+              unavailable:
+                $ref: '#/components/schemas/unavailable'
         unavailable:
-            description: ""
-            type: string
-            enum: [
-              "0",
-              "1",
-              "2"
-            ]
+          $ref: '#/components/schemas/unavailable'
     jobType:
       description: "A list of information relating to the types of profession entered by students."
       type: array
       items:
         type: object
-        required: [
-          unavailable
-        ]
         properties:
           aggregation_level:
             description: "Aggregation level applied to job type data for the course. Known as 'JOBAGG' in job type csv."
@@ -275,25 +272,15 @@ components:
           response_rate:
             description: "Response rate of students in the population from which the job type data is derived for the course. Known as 'JOBRESP_RATE' in job type csv."
             type: integer
-          subject_code:
-            description: "JACS Level subject code. Known as 'JOBSBJ' in job type csv."
-            type: string
+          subject:
+            $ref: '#/components/schemas/subject'
           unavailable:
-            description: ""
-            type: string
-            enum: [
-              "0",
-              "1",
-              "2"
-            ]
+            $ref: '#/components/schemas/unavailable'
     leo:
       description: "A list of Longitudinal Education Outcomes salary data, (The data shows the typical annual earnings range three years after the student has graduated)."
       type: array
       items:
         type: object
-        required: [
-          unavailable
-        ]
         properties:
           aggregation_level:
             description: "Aggregation level applied to the Longitudinal Education Outcomes data for the subject (data is always subject level). Known as 'LEOAGG' in leo csv."
@@ -318,25 +305,15 @@ components:
           number_of_graduates:
             description: "Number of graduates included in the Longitudinal Education Outcomes data for the subject being used for the course. Known as 'LEOPOP' in leo csv."
             type: integer
-          subject_code:
-            description: "Subject code. Known as 'LEOSBJ' in leo csv."
-            type: string
+          subject:
+            $ref: '#/components/schemas/subject'
           unavailable:
-            description: ""
-            type: string
-            enum: [
-              "0",
-              "1",
-              "2"
-            ]
+            $ref: '#/components/schemas/unavailable'
     salary: 
       description: "A list of salary information of students (6 months after graduation)."
       type: array
       items:
         type: object
-        required: [
-          unavailable
-        ]
         properties:
           aggregation_level:
             description: "Aggregation level applied to the salary data for the course. Known as 'SALAGG' in salary csv."
@@ -364,17 +341,10 @@ components:
           response_rate:
             description: "Response rate of students in the population from which the salary data is derived for the course. Known as 'SALRESP_RATE' in salary csv."
             type: integer
-          subject_code:
-            description: "JACS Level subject code. Known as 'SALSBJ' in salary csv."
-            type: string
+          subject:
+            $ref: '#/components/schemas/subject'
           unavailable:
-            description: ""
-            type: string
-            enum: [
-              "0",
-              "1",
-              "2"
-            ]
+            $ref: '#/components/schemas/unavailable'
     course:
       description: "Details of course and related statistics"
       required: [
@@ -523,6 +493,17 @@ components:
             self
           ]
           properties:
+            accommodation:
+              description: "URLs for further details on accommodation opportunities. Known as 'ACCOMURL' and 'ACCOMURLW' in english and welsh respectively within the LOCATION csv."
+              required: [
+                english
+              ]
+              type: object
+              properties:
+                english:
+                  $ref: '#/components/schemas/englishLink'
+                welsh:
+                  $ref: '#/components/schemas/welshLink'
             assessment_method:
               description: "URLs explaining assessment methods of the course. Known as 'ASSURL' and 'ASSURLW' in english and welsh respectively within the KIS course csv."
               required: [
@@ -582,6 +563,17 @@ components:
                   $ref: '#/components/schemas/welshLink'      
             self:
               $ref: '#/components/schemas/selfLink'
+            student_union:
+              description: "URLs for further information on the student union. Known as 'SUURL' and 'SUURLW' in english and welsh respectively within the LOCATION csv."
+              required: [
+                english
+              ]
+              type: object
+              properties:
+                english:
+                  $ref: '#/components/schemas/englishLink'
+                welsh:
+                  $ref: '#/components/schemas/welshLink'
         location:
           description: "Sub document containing information on course location."
           required: [
@@ -600,6 +592,16 @@ components:
             longitude:
               description: "Longitude reference point for the teaching location. Known as 'LONGITUDE' in location csv."
               type: string
+            name:
+              description: "Teaching location name object, may contain english or welsh or both names."
+              type: object
+              properties:
+                english:
+                  description: "English name for teaching location."
+                  type: string
+                welsh:
+                  description: "Welsh name for teaching location."
+                  type: string
         mode:
           description: "Indicator to represent if a course is advertised as full-time, part-time or both. Known as 'KISMODE' in KIS course csv."
           required: [
