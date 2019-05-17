@@ -1,6 +1,6 @@
 The MIT License (MIT)
 
-Copyright (c) 2019 Nathan Shumoogum
+Copyright (c) 2019 office-for-students
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
