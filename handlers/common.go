@@ -100,6 +100,11 @@ func drainBody(ctx context.Context, r *http.Request) {
 
 func writeBody(ctx context.Context, w http.ResponseWriter, b []byte) {
 	w.Header().Set("Content-Type", "application/json")
+
+	//Allow CORS here By * or specific origin
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
 	if _, err := w.Write(b); err != nil {
 		log.ErrorCtx(ctx, errors.WithMessage(err, "failed to write response body"), nil)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
